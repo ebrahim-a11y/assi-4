@@ -1,0 +1,21 @@
+import requests
+from bs4 import BeautifulSoup
+
+# Step 1: Send a GET request to the website
+url = "https://quotes.toscrape.com"
+response = requests.get(url)
+
+# Step 2: Check response status
+if response.status_code == 200:
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Step 3: Find all quote blocks
+    quotes = soup.find_all('div', class_='quote')
+    
+    # Step 4: Extract data from each quote block
+    for i, quote in enumerate(quotes, 1):
+        text = quote.find('span', class_='text').text
+        author = quote.find('small', class_='author').text
+        print(f"{i}. {text} — {author}")
+else:
+    print("Failed to retrieve the page")
